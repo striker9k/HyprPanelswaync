@@ -108,7 +108,7 @@ export const Notifications = (): BarBoxChild => {
 
                         disconnectFunctions.push(
                             onPrimaryClick(self, (clicked, event) => {
-                                openDropdownMenu(clicked, event, 'notificationsmenu');
+                                runAsyncCommand('swaync-client -t -sw', { clicked, event });
                             }),
                         );
 
