@@ -26,13 +26,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y meson ninja-build python3-gi gir1.2-gtk-3.0 libsoup-3.0-dev libgtop2-dev upower python3-pip
 
+      - name: Install AGS (Aylur's GTK Shell)
+        run: |
+          wget https://github.com/Aylur/ags/releases/latest/download/ags-x86_64.AppImage -O ags.AppImage
+          chmod +x ags.AppImage
+          sudo mv ags.AppImage /usr/local/bin/ags
+
       - name: Install Node.js dependencies
         run: npm install
 
-      - name: Build TypeScript
-        run: npm run build || true # if this step is needed and doesn't exist, ignore
+      # Remove TypeScript build step if not needed
 
       - name: Build HyprPanelswaync (Meson)
         run: |
           meson setup build
           meson compile -C build
+
+      - name: Archive build
+        uses: actions/upload-artifact@v4
+        with:
+          name: hyprpanelswaync-build
+          path: build/
